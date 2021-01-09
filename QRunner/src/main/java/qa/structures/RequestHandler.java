@@ -105,7 +105,7 @@ public class RequestHandler {
     @GET
     @Path("/availableCommands")
     @Produces(MediaType.TEXT_HTML)
-    public QCommandsView getPerson() {
+    public QCommandsView availableCommands() {
         return new QCommandsView();
     }
 
