@@ -15,19 +15,19 @@ import java.util.*;
 @Path("/")
 public class RequestHandler {
 
-    private final Map<String, QModule> mapIdToBusinessLogic = new HashMap<>();
-    private final List<QResponse> aggregatedOutputs = new ArrayList<>();
-    private final Map<String, List<QRequest>> mapAppNameToGatewayCommands = new HashMap<>();
+    private final Map<String, QModule> instanceIdToModule = new HashMap<>();
+    private final Map<String, List<QRequest>> appNameToCollectedRequests = new HashMap<>();
+    private final List<QResponse> collectedResponses = new ArrayList<>();
 
-    public void registerQModule(String serviceId, QModule qModule) {
-        this.mapIdToBusinessLogic.put(serviceId, qModule);
+    public void registerQModule(String instanceId, QModule qModule) {
+        this.instanceIdToModule.put(instanceId, qModule);
     }
 
     @POST
     @Path("/runCommand")
     public Response runCommand(QRequest qRequest) {
         String instanceId = qRequest.getInstanceId();
-        QModule qModule = this.mapIdToBusinessLogic.get(instanceId);
+        QModule qModule = this.instanceIdToModule.get(instanceId);
         if (qModule == null) {
             return Response.status(Response.Status.BAD_REQUEST).entity(String.format("Module does not exist: %s", instanceId)).build();
         }
@@ -43,22 +43,22 @@ public class RequestHandler {
     @POST
     @Path("/pushResponse")
     public Response pushResponse(QResponse response) {
-        this.aggregatedOutputs.add(response);
+        this.collectedResponses.add(response);
         return Response.ok(response).build();
     }
 
     @POST
     @Path("/fetchResponses")
     public Response fetchResponses() {
-        this.aggregatedOutputs.sort(Comparator.comparing(QResponse::getTimestamp));
-        return Response.ok(this.aggregatedOutputs).build();
+        this.collectedResponses.sort(Comparator.comparing(QResponse::getTimestamp));
+        return Response.ok(this.collectedResponses).build();
     }
 
     @POST
     @Path("/clearResponses")
     public Response clearResponses() {
-        int beforeClearing = this.aggregatedOutputs.size();
-        this.aggregatedOutputs.clear();
+        int beforeClearing = this.collectedResponses.size();
+        this.collectedResponses.clear();
         return Response.ok(Map.of("cleared", beforeClearing)).build();
     }
 
@@ -66,30 +66,30 @@ public class RequestHandler {
     @Path("/storeGatewayCommands")
     public Response storeGatewayCommands(QGatewayRequest gatewayRequest) {
         String applicationId = gatewayRequest.getApplicationId();
-        this.mapAppNameToGatewayCommands.computeIfAbsent(applicationId, app -> new ArrayList<>());
-        this.mapAppNameToGatewayCommands.get(applicationId).addAll(gatewayRequest.getRequests());
+        this.appNameToCollectedRequests.computeIfAbsent(applicationId, app -> new ArrayList<>());
+        this.appNameToCollectedRequests.get(applicationId).addAll(gatewayRequest.getRequests());
         return Response.ok(Map.of("stored", gatewayRequest)).build();
     }
 
     @POST
     @Path("/pullGatewayCommands")
     public Response pullGatewayCommands(String applicationId) {
-        if (!this.mapAppNameToGatewayCommands.containsKey(applicationId)) {
+        if (!this.appNameToCollectedRequests.containsKey(applicationId)) {
             return Response.ok(Map.of("commands", List.of())).build();
         }
-        List<QRequest> commands = this.mapAppNameToGatewayCommands.get(applicationId);
+        List<QRequest> commands = this.appNameToCollectedRequests.get(applicationId);
         return Response.ok(Map.of("commands", commands)).build();
     }
 
     @POST
     @Path("/clearGatewayCommands")
     public Response clearGatewayCommands(String applicationId) {
-        if (!this.mapAppNameToGatewayCommands.containsKey(applicationId)) {
+        if (!this.appNameToCollectedRequests.containsKey(applicationId)) {
             return Response.status(
                     Response.Status.BAD_REQUEST.getStatusCode(),
                     String.format("No stored commands for application: %s", applicationId)).build();
         }
-        this.mapAppNameToGatewayCommands.get(applicationId).clear();
+        this.appNameToCollectedRequests.get(applicationId).clear();
         return Response.ok(Map.of("cleared", true)).build();
     }
 
@@ -103,7 +103,7 @@ public class RequestHandler {
     }
 
     @GET
-    @Path("/getQaCommands")
+    @Path("/availableCommands")
     @Produces(MediaType.TEXT_HTML)
     public QCommandsView getPerson() {
         return new QCommandsView();
