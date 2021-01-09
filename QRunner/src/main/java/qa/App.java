@@ -9,6 +9,7 @@ import io.dropwizard.setup.Environment;
 import io.dropwizard.views.ViewBundle;
 import qa.config.Config;
 import qa.interfaces.QModuleProviderInterface;
+import qa.structures.*;
 
 import javax.ws.rs.client.Entity;
 import javax.ws.rs.client.WebTarget;
