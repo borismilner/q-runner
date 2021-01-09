@@ -1,0 +1,45 @@
+<link rel="stylesheet" href="web/css/bootstrap.min.css">
+<script src="web/js/jquery-3.5.1.min.js"></script>
+
+<div class="container">
+
+    <div class="row justify-content-center">
+        <h1 class="display-4">Available Methods</h1>
+    </div>
+    <div class="row">
+        <div class="input-group mb-3 mt-3">
+            <div class="input-group-prepend">
+                <span class="input-group-text">Filter</span>
+            </div>
+            <input type="text" id='filter' class="form-control">
+        </div>
+    </div>
+
+    <div class="row">
+        {{#commands}}
+            <ul class="list-group col-md-4 mt-3" data-method={{methodName}}>
+                <li class="list-group-item list-group-item-success">{{methodName}}</li>
+                {{#parameters}}
+                    <li class="list-group-item list-group-item-light">{{parameterName}} : {{parameterType}}</li>
+                {{/parameters}}
+            </ul>
+            <br>
+        {{/commands}}
+    </div>
+
+</div>
+
+
+<script type="text/javascript">
+    $("#filter").keyup(function () {
+        var selectName = $(this).val();
+        filter(selectName);
+    });
+
+    function filter(e) {
+        var regex = new RegExp('.*' + e + '.*', 'i');
+        $('.list-group').hide().filter(function () {
+            return regex.test($(this).data('method'))
+        }).show();
+    }
+</script>

@@ -1,0 +1,8 @@
+unique-name: "qa-elm"
+qualified-name: "qa-elm"
+version: 1.0
+assembly: "qa"
+dependencies:
+  - notification-module
+  - context-provider-module
+  - elm-module

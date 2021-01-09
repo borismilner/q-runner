@@ -1,0 +1,42 @@
+applicationId: "MyApplication"
+
+server:
+  applicationConnectors:
+    - type: http
+      port: 2104
+  adminConnectors:
+    - type: http
+      port: 2105
+
+commandAggregatorAddress: http://localhost:2104
+outputAggregatorAddress: http://localhost:2104
+
+autoPullingCommands: false
+autoPullingIntervalSeconds: 1
+
+activeObjectFactories:
+  - qa.components.factories.BasicObjectFactory
+  - qa.components.factories.OSFObjectFactory
+
+activeModuleLoaders:
+  - qa.components.providers.MockModuleProvider
+  - qa.components.providers.OSFModuleProvider
+
+instanceToModule:
+  - instanceId: first
+    qModule: qa.QAELM
+
+# Logging settings.
+logging:
+  level: INFO
+  appenders:
+    - type: console
+      target: stderr
+    - type: file
+      currentLogFilename: ./logs/QALog.log
+      archivedLogFilenamePattern: ./logs/QALog-%d.log.gz
+      archivedFileCount: 5
+  # Logger-specific levels.
+  loggers:
+    "qa.App":
+      level: DEBUG

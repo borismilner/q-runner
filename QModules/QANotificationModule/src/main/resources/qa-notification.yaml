@@ -1,0 +1,6 @@
+unique-name: "qa-notification"
+qualified-name: "qa-notification"
+version: 1.0
+assembly: "qa"
+dependencies:
+  - notification-module

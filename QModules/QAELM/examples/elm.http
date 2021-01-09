@@ -1,0 +1,145 @@
+POST http://{{host}}:{{port}}/runCommand
+Content-Type: application/json
+
+{
+  "businessLogicId": "elm",
+  "method": "getAllTestClasses",
+  "commandParameters": {}
+}
+
+###
+
+POST http://{{host}}:{{port}}/runCommand
+Content-Type: application/json
+
+{
+  "businessLogicId": "elm",
+  "method": "getWritableFor",
+  "commandParameters": {
+    "immutableTypeName": "osf.modules.elm.Track",
+    "toMemoryKey": "writableTrack"
+  }
+}
+
+###
+
+POST http://{{host}}:{{port}}/runCommand
+Content-Type: application/json
+
+{
+  "businessLogicId": "elm",
+  "method": "createCustomObject",
+  "commandParameters": {
+    "objectClass": "ListOfPoints",
+    "customContent": "[{\"latitude\": 1.5, \"longitude\":  2.3, \"altitude\": 7.5},{\"latitude\": 1.5, \"longitude\":  2.3, \"altitude\": 7.5},{\"latitude\": 1.5, \"longitude\":  2.3, \"altitude\": 7.5}]",
+    "toMemoryKey": "pointsForTrack"
+  }
+}
+
+###
+
+POST http://{{host}}:{{port}}/runCommand
+Content-Type: application/json
+
+{
+  "businessLogicId": "elm",
+  "method": "createCustomObject",
+  "commandParameters": {
+    "objectClass": "UUID",
+    "customContent": "40fb528b-8466-4fba-b96d-ebeb0b7d0080",
+    "toMemoryKey": "sensorIdForTrack"
+  }
+}
+
+###
+
+POST http://{{host}}:{{port}}/runCommand
+Content-Type: application/json
+
+{
+  "businessLogicId": "elm",
+  "method": "editObject",
+  "commandParameters": {
+    "targetMemoryKey": "writableTrack",
+    "fieldName": "points",
+    "fromMemoryKey": "pointsForTrack"
+  }
+}
+
+###
+
+POST http://{{host}}:{{port}}/runCommand
+Content-Type: application/json
+
+{
+  "businessLogicId": "elm",
+  "method": "editObject",
+  "commandParameters": {
+    "targetMemoryKey": "writableTrack",
+    "fieldName": "sensorId",
+    "fromMemoryKey": "sensorIdForTrack"
+  }
+}
+
+###
+
+POST http://{{host}}:{{port}}/runCommand
+Content-Type: application/json
+
+{
+  "businessLogicId": "elm",
+  "method": "changeElmOwnerName",
+  "commandParameters": {
+    "ownerName": "SensorGW"
+  }
+}
+
+###
+
+POST http://{{host}}:{{port}}/runCommand
+Content-Type: application/json
+
+{
+  "businessLogicId": "elm",
+  "method": "submitWritable",
+  "commandParameters": {
+    "fromMemoryKey": "writableTrack",
+    "toMemoryKey": "immutableTrack"
+  }
+}
+
+###
+
+POST http://{{host}}:{{port}}/runCommand
+Content-Type: application/json
+
+{
+  "businessLogicId": "elm",
+  "method": "size",
+  "commandParameters": {}
+}
+
+###
+
+POST http://{{host}}:{{port}}/runCommand
+Content-Type: application/json
+
+{
+  "businessLogicId": "elm",
+  "method": "viewMemory",
+  "commandParameters": {
+    "fromMemoryKey": "immutableTrack"
+  }
+}
+
+
+###
+
+POST http://{{host}}:{{port}}/runCommand
+Content-Type: application/json
+
+{
+  "businessLogicId": "elm",
+  "method": "getQaCommands",
+  "commandParameters": {}
+}
