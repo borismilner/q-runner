@@ -29,7 +29,7 @@ public class RequestHandler {
         String instanceId = qRequest.getInstanceId();
         QModule qModule = this.instanceIdToModule.get(instanceId);
         if (qModule == null) {
-            return Response.status(Response.Status.BAD_REQUEST).entity(String.format("Module does not exist: %s", instanceId)).build();
+            return Response.status(Response.Status.BAD_REQUEST).entity(String.format("Instance does not exist: %s", instanceId)).build();
         }
         Response response = qModule.runCommand(qRequest);
         Response reply = this.transmitOutput((QResponse) response.getEntity());
