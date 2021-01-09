@@ -15,9 +15,9 @@ A project I was working on, required that our java infrastructural modules were 
 ```yaml
 instanceToModule:
   - instanceId: entity_cache
-  qModule: qa.EntityCache
-             - instanceId: token_generator
-  qModule: qa.TokenGenerator
+    qModule: qa.EntityCache
+  - instanceId: token_generator
+    qModule: qa.TokenGenerator
 ```
 
 2. Supports both **request-response** and **asynchronious** execution methods. When commands are sent directly to a Q-Runner runnin instance, it executes the required logic and returns a result to the client. You may, however, configure Q-Runner to _
