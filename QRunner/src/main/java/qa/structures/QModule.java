@@ -103,7 +103,7 @@ public class QModule {
     }
 
     public Response runCommand(QRequest qRequest) {
-        String requestMethod = qRequest.getMethod();
+        String requestMethod = qRequest.getMethodName();
 
         Set<Method> allMethods = new HashSet<>();
         allMethods.addAll(Arrays.asList(this.getClass().getDeclaredMethods().clone()));
@@ -112,7 +112,7 @@ public class QModule {
         for (Method method : allMethods) {
             Parameter[] requiredParameters = method.getParameters();
             List<Object> providedParameters = new ArrayList<>();
-            Map<String, Object> commandParameters = qRequest.getCommandParameters();
+            Map<String, Object> commandParameters = qRequest.getParameters();
             for (Parameter parameter : requiredParameters) {
                 String parameterName = parameter.getName();
                 if (!commandParameters.containsKey(parameterName)) {
@@ -136,7 +136,7 @@ public class QModule {
         }
         return Response.status(Response.Status.BAD_REQUEST.getStatusCode(),
                 String.format("Instance %s contains %d methods called %s but none receive the parameters : %s",
-                        this.instanceId, allMethods.size(), requestMethod, qRequest.getCommandParameters())).build();
+                        this.instanceId, allMethods.size(), requestMethod, qRequest.getParameters())).build();
     }
 
     /**
