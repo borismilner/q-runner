@@ -1,4 +1,4 @@
-package qa.osf;
+package qa.components.providers;
 
 import osf.manager.ModuleManager;
 import qa.structures.QModule;

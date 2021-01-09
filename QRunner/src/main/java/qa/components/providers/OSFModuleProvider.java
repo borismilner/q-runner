@@ -4,7 +4,6 @@ import qa.config.Config;
 import qa.config.ModuleConfig;
 import qa.exceptions.QException;
 import qa.interfaces.QModuleProviderInterface;
-import qa.osf.Container;
 import qa.structures.QModule;
 
 import javax.ws.rs.core.Response;
