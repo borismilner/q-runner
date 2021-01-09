@@ -19,12 +19,6 @@
 
     <dependencies>
         <dependency>
-            <groupId>osf.testing</groupId>
-            <artifactId>QATester</artifactId>
-            <version>1.0-SNAPSHOT</version>
-            <scope>compile</scope>
-        </dependency>
-        <dependency>
             <groupId>osf</groupId>
             <artifactId>TestEntities</artifactId>
             <version>[0.0.35,)</version>
