@@ -4,7 +4,7 @@ _Simplify interaction with your java business logic by making it REST accessible
 
 ***
 
-**Breif History**
+**Breif History**  
 A project I was working on, required that our java infrastructural modules were tested by an external QA team of non-programmers. Q-Runner is a bridge between my team and the QA team allowing them to run our java code using REST commands.
 
 **Features**
@@ -94,10 +94,10 @@ applicationId: "MyApplication"
 server:
   applicationConnectors:
     - type: http
-  port: 2104
+      port: 2104
   adminConnectors:
     - type: http
-  port: 2105
+      port: 2105
 commandAggregatorAddress: http://localhost:2104
 outputAggregatorAddress: http://localhost:2104
 autoPullingCommands: false
@@ -119,12 +119,12 @@ logging:
   appenders:
     - type: console
   target: stderr
-            - type: file
+    - type: file
   currentLogFilename: ./logs/QALog.log
   archivedLogFilenamePattern: ./logs/QALog-%d.log.gz
   archivedFileCount: 5
   # Logger-specific levels.
   loggers:
-  "qa.App":
-  level: DEBUG
+    "qa.App":
+    level: DEBUG
 ```
