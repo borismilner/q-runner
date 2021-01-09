@@ -4,6 +4,7 @@ import io.dropwizard.views.View;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 
@@ -18,8 +19,9 @@ public class QCommandsView extends View {
         QModule qModule = new QModule("", "");
         QResponse qaCommands = qModule.getCommands();
         Map<String, Object> response = qaCommands.getResponse();
-        for (Object x : response.values()) {
-            this.commands.addAll((ArrayList<MethodDescription>) x);
+        Collection<Object> methodDescriptions = response.values();
+        for (Object methodDescription : methodDescriptions) {
+            this.commands.addAll((ArrayList<MethodDescription>) methodDescription);
         }
         return this.commands;
     }
