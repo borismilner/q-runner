@@ -23,7 +23,7 @@ public class OSFModuleProvider implements QModuleProviderInterface {
             QModule qModule = null;
             String moduleName = moduleConfig.getqModule();
             try {
-                qModule = Container.getService(Class.forName(moduleName));
+                qModule = OSFContainer.getService(Class.forName(moduleName));
             } catch (ClassNotFoundException classNotFoundException) {
                 throw new QException(Response.Status.INTERNAL_SERVER_ERROR, String.format("Error loading module: %s", moduleName), classNotFoundException);
             }
