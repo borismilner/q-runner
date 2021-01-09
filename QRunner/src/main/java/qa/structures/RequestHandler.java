@@ -35,7 +35,7 @@ public class RequestHandler {
         Response reply = this.transmitOutput((QResponse) response.getEntity());
         if (reply.getStatus() != Response.Status.OK.getStatusCode()) {
             QResponse responseEntity = (QResponse) response.getEntity();
-            responseEntity.getResponse().put("SIMULATOR-ERROR", "Failed pushing response to aggregator");
+            responseEntity.getResponse().put("INTERNAL-ERROR", "Failed pushing response to aggregator");
         }
         return response;
     }
