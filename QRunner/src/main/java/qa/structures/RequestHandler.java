@@ -15,27 +15,27 @@ import java.util.*;
 @Path("/")
 public class RequestHandler {
 
-    private final Map<String, QModule> mapIdToBusinessLogic = new HashMap<>();
-    private final List<QResponse> aggregatedOutputs = new ArrayList<>();
-    private final Map<String, List<QRequest>> mapAppNameToGatewayCommands = new HashMap<>();
+    private final Map<String, QModule> instanceIdToModule = new HashMap<>();
+    private final Map<String, List<QRequest>> appNameToCollectedRequests = new HashMap<>();
+    private final List<QResponse> collectedResponses = new ArrayList<>();
 
-    public void registerQModule(String serviceId, QModule qModule) {
-        this.mapIdToBusinessLogic.put(serviceId, qModule);
+    public void registerQModule(String instanceId, QModule qModule) {
+        this.instanceIdToModule.put(instanceId, qModule);
     }
 
     @POST
     @Path("/runCommand")
     public Response runCommand(QRequest qRequest) {
         String instanceId = qRequest.getInstanceId();
-        QModule qModule = this.mapIdToBusinessLogic.get(instanceId);
+        QModule qModule = this.instanceIdToModule.get(instanceId);
         if (qModule == null) {
-            return Response.status(Response.Status.BAD_REQUEST).entity(String.format("Module does not exist: %s", instanceId)).build();
+            return Response.status(Response.Status.BAD_REQUEST).entity(String.format("Instance does not exist: %s", instanceId)).build();
         }
         Response response = qModule.runCommand(qRequest);
         Response reply = this.transmitOutput((QResponse) response.getEntity());
         if (reply.getStatus() != Response.Status.OK.getStatusCode()) {
             QResponse responseEntity = (QResponse) response.getEntity();
-            responseEntity.getResponse().put("SIMULATOR-ERROR", "Failed pushing response to aggregator");
+            responseEntity.getResponse().put("INTERNAL-ERROR", "Failed pushing response to aggregator");
         }
         return response;
     }
@@ -43,53 +43,53 @@ public class RequestHandler {
     @POST
     @Path("/pushResponse")
     public Response pushResponse(QResponse response) {
-        this.aggregatedOutputs.add(response);
+        this.collectedResponses.add(response);
         return Response.ok(response).build();
     }
 
     @POST
     @Path("/fetchResponses")
     public Response fetchResponses() {
-        this.aggregatedOutputs.sort(Comparator.comparing(QResponse::getTimestamp));
-        return Response.ok(this.aggregatedOutputs).build();
+        this.collectedResponses.sort(Comparator.comparing(QResponse::getTimestamp));
+        return Response.ok(this.collectedResponses).build();
     }
 
     @POST
     @Path("/clearResponses")
     public Response clearResponses() {
-        int beforeClearing = this.aggregatedOutputs.size();
-        this.aggregatedOutputs.clear();
+        int beforeClearing = this.collectedResponses.size();
+        this.collectedResponses.clear();
         return Response.ok(Map.of("cleared", beforeClearing)).build();
     }
 
     @POST
-    @Path("/storeGatewayCommands")
-    public Response storeGatewayCommands(QGatewayRequest gatewayRequest) {
+    @Path("/pushGatewayRequest")
+    public Response pushGatewayRequest(QGatewayRequest gatewayRequest) {
         String applicationId = gatewayRequest.getApplicationId();
-        this.mapAppNameToGatewayCommands.computeIfAbsent(applicationId, app -> new ArrayList<>());
-        this.mapAppNameToGatewayCommands.get(applicationId).addAll(gatewayRequest.getRequests());
-        return Response.ok(Map.of("stored", gatewayRequest)).build();
+        this.appNameToCollectedRequests.computeIfAbsent(applicationId, app -> new ArrayList<>());
+        this.appNameToCollectedRequests.get(applicationId).addAll(gatewayRequest.getRequests());
+        return Response.ok(Map.of("pushed", gatewayRequest)).build();
     }
 
     @POST
-    @Path("/pullGatewayCommands")
+    @Path("/pullGatewayRequests")
     public Response pullGatewayCommands(String applicationId) {
-        if (!this.mapAppNameToGatewayCommands.containsKey(applicationId)) {
+        if (!this.appNameToCollectedRequests.containsKey(applicationId)) {
             return Response.ok(Map.of("commands", List.of())).build();
         }
-        List<QRequest> commands = this.mapAppNameToGatewayCommands.get(applicationId);
+        List<QRequest> commands = this.appNameToCollectedRequests.get(applicationId);
         return Response.ok(Map.of("commands", commands)).build();
     }
 
     @POST
     @Path("/clearGatewayCommands")
     public Response clearGatewayCommands(String applicationId) {
-        if (!this.mapAppNameToGatewayCommands.containsKey(applicationId)) {
+        if (!this.appNameToCollectedRequests.containsKey(applicationId)) {
             return Response.status(
                     Response.Status.BAD_REQUEST.getStatusCode(),
                     String.format("No stored commands for application: %s", applicationId)).build();
         }
-        this.mapAppNameToGatewayCommands.get(applicationId).clear();
+        this.appNameToCollectedRequests.get(applicationId).clear();
         return Response.ok(Map.of("cleared", true)).build();
     }
 
@@ -103,9 +103,9 @@ public class RequestHandler {
     }
 
     @GET
-    @Path("/getQaCommands")
+    @Path("/availableCommands")
     @Produces(MediaType.TEXT_HTML)
-    public QCommandsView getPerson() {
+    public QCommandsView availableCommands() {
         return new QCommandsView();
     }
 

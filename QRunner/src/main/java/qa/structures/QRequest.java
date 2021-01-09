@@ -11,9 +11,9 @@ public class QRequest {
     private String instanceId;
     @JsonProperty
     @NotEmpty
-    private String method;
+    private String methodName;
     @JsonProperty
-    private Map<String, Object> commandParameters;
+    private Map<String, Object> parameters;
 
     public String getInstanceId() {
         return this.instanceId;
@@ -23,19 +23,19 @@ public class QRequest {
         this.instanceId = instanceId;
     }
 
-    public String getMethod() {
-        return this.method;
+    public String getMethodName() {
+        return this.methodName;
     }
 
-    public void setMethod(String method) {
-        this.method = method;
+    public void setMethodName(String methodName) {
+        this.methodName = methodName;
     }
 
-    public Map<String, Object> getCommandParameters() {
-        return this.commandParameters;
+    public Map<String, Object> getParameters() {
+        return this.parameters;
     }
 
-    public void setCommandParameters(Map<String, Object> commandParameters) {
-        this.commandParameters = commandParameters;
+    public void setParameters(Map<String, Object> parameters) {
+        this.parameters = parameters;
     }
 }
