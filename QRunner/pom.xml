@@ -44,11 +44,9 @@
             <artifactId>dropwizard-assets</artifactId>
             <version>${dropwizard.version}</version>
         </dependency>
-
     </dependencies>
 
     <build>
-
         <resources>
             <resource>
                 <directory>./src/main/java</directory>
@@ -57,7 +55,6 @@
                     <include>qa/structures/web/**/*.*</include>
                 </includes>
             </resource>
-
         </resources>
 
         <plugins>
@@ -71,7 +68,6 @@
                     </outputDirectory>
                 </configuration>
             </plugin>
-
             <!--Attach Sources-->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
@@ -85,7 +81,6 @@
                     </execution>
                 </executions>
             </plugin>
-
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
@@ -96,10 +91,6 @@
                     </compilerArgs>
                 </configuration>
             </plugin>
-
-
         </plugins>
-
     </build>
-
 </project>
