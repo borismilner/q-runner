@@ -63,16 +63,16 @@ public class RequestHandler {
     }
 
     @POST
-    @Path("/storeGatewayCommands")
-    public Response storeGatewayCommands(QGatewayRequest gatewayRequest) {
+    @Path("/pushGatewayRequest")
+    public Response pushGatewayRequest(QGatewayRequest gatewayRequest) {
         String applicationId = gatewayRequest.getApplicationId();
         this.appNameToCollectedRequests.computeIfAbsent(applicationId, app -> new ArrayList<>());
         this.appNameToCollectedRequests.get(applicationId).addAll(gatewayRequest.getRequests());
-        return Response.ok(Map.of("stored", gatewayRequest)).build();
+        return Response.ok(Map.of("pushed", gatewayRequest)).build();
     }
 
     @POST
-    @Path("/pullGatewayCommands")
+    @Path("/pullGatewayRequests")
     public Response pullGatewayCommands(String applicationId) {
         if (!this.appNameToCollectedRequests.containsKey(applicationId)) {
             return Response.ok(Map.of("commands", List.of())).build();
