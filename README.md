@@ -32,6 +32,8 @@ autoPullingCommands: false
 autoPullingIntervalSeconds: 1
 ```
 
+    ![Synchronious Exexution](./resources/images/sync.png "Sync") ![Synchronious Exexution](./resources/images/async.png "Async")
+
 3. Many built-in convenience requests to ease interaction with the java-logic, for example:
 
 * `createObject`- to generate a selected java-object and store it in memory
@@ -119,7 +121,7 @@ logging:
   appenders:
     - type: console
   target: stderr
-    - type: file
+            - type: file
   currentLogFilename: ./logs/QALog.log
   archivedLogFilenamePattern: ./logs/QALog-%d.log.gz
   archivedFileCount: 5
