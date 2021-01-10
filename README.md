@@ -32,7 +32,7 @@ autoPullingCommands: false
 autoPullingIntervalSeconds: 1
 ```
 
-    ![Synchronious Exexution](./resources/images/sync.png "Sync") ![Synchronious Exexution](./resources/images/async.png "Async")
+![Synchronious Exexution](./resources/images/sync.png "Sync")![Synchronious Exexution](./resources/images/async.png "Async")
 
 3. Many built-in convenience requests to ease interaction with the java-logic, for example:
 
@@ -59,8 +59,6 @@ run.bat
 │   │       ctlm.module-0.0.8.jar
 │   │       elm-module-0.0.35.jar
 │   │       notifications-0.0.12.jar
-│   │       osf-0.0.16-javadoc.jar
-│   │       osf-0.0.16-sources.jar
 │   │       osf-0.0.16.jar
 │   │       osf-object-0.0.5.jar
 │   │       shared-0.0.13.jar
@@ -71,7 +69,7 @@ run.bat
 │   │       QAELM-1.0-SNAPSHOT.jar
 │   │
 │   ├───simulator
-│   │       QATester-1.0-SNAPSHOT.jar
+│   │       QRunner-1.0-SNAPSHOT.jar
 │   │
 │   └───third_party
 │           aether-api-1.0.2.v20150114.jar
