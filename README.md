@@ -32,10 +32,9 @@ autoPullingCommands: false
 autoPullingIntervalSeconds: 1
 ```
 
-![Synchronious Exexution](./resources/images/sync.png "Sync")![Synchronious Exexution](./resources/images/async.png "Async")
+![Execution Modes](./resources/images/execution_modes.png "Sync")
 
 3. Many built-in convenience requests to ease interaction with the java-logic, for example:
-
 * `createObject`- to generate a selected java-object and store it in memory
 * `viewMemory`- to view a json-representation of an object stored in memory
 * `editObject`- to manipulate the fields of an object stored in memory
